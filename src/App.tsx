@@ -1,8 +1,13 @@
+import AppRouter from "./components/router/AppRouter";
 import HeaderRouter from "./components/router/HeaderRouter";
-import HeaderTemplate from "./templates/layouts/headers/Header.template";
 
 function App() {
-    return <HeaderRouter />;
+    return (
+        <>
+            <AppRouter />
+            <HeaderRouter />
+        </>
+    );
 }
 
 export default App;

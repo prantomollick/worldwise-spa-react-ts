@@ -6,6 +6,7 @@ import NotFoundPage from "../pages/NotFound.page";
 import ProductPage from "../pages/product/Product.page";
 import PricePage from "../pages/pricing/Pricing.page";
 import LoginPage from "../pages/login/Login.page";
+import AppPage from "../pages/app/App.page";
 
 const HeaderRoutes: RouteProps[] = [
     { path: "/", element: <HomePage /> },
@@ -13,6 +14,7 @@ const HeaderRoutes: RouteProps[] = [
     { path: pagesConfig.pricingPage.to, element: <PricePage /> },
     { path: pagesConfig.pricingPage.to, element: <PricePage /> },
     { path: pagesConfig.loginPage.to, element: <LoginPage /> },
+    { path: pagesConfig.appPage.to, element: <AppPage /> },
     { path: "*", element: <NotFoundPage /> }
 ];
 

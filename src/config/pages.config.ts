@@ -1,11 +1,11 @@
-interface IHeaderPages {
+interface IPages {
     id: string;
     to: string;
     text: string;
     icon?: string;
 }
 
-export const headerPages: { [key: string]: IHeaderPages } = {
+export const headerPages: { [key: string]: IPages } = {
     homePage: {
         id: "homePage",
         to: "/",
@@ -41,8 +41,25 @@ export const headerPages: { [key: string]: IHeaderPages } = {
     }
 };
 
-const pagesConfig = {
-    ...headerPages
+export const appPages: { [key: string]: IPages } = {
+    citiesPage: {
+        id: "citiesPage",
+        to: "/cities",
+        text: "Cities",
+        icon: "🗺️"
+    },
+
+    countriesPage: {
+        id: "countriesPage",
+        to: "/countries",
+        text: "Countries",
+        icon: "🌎"
+    }
+};
+
+const pagesConfig: { [key: string]: IPages } = {
+    ...headerPages,
+    ...appPages
 };
 
 export default pagesConfig;
