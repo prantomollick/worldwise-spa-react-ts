@@ -1,11 +1,4 @@
-interface IPages {
-    id: string;
-    to: string;
-    text: string;
-    icon?: string;
-}
-
-export const headerPages: { [key: string]: IPages } = {
+export const headerPages = {
     homePage: {
         id: "homePage",
         to: "/",
@@ -37,29 +30,28 @@ export const headerPages: { [key: string]: IPages } = {
         id: "appPage",
         to: "/app",
         text: "App",
-        icon: "🈸"
+        icon: "🈸",
+
+        subPages: {
+            citiesPage: {
+                id: "citiesPage",
+                to: "/app/cities",
+                text: "Cities",
+                icon: "🗺️"
+            },
+
+            countriesPage: {
+                id: "countriesPage",
+                to: "/app/countries",
+                text: "Countries",
+                icon: "🌎"
+            }
+        }
     }
 };
 
-export const appPages: { [key: string]: IPages } = {
-    citiesPage: {
-        id: "citiesPage",
-        to: "/cities",
-        text: "Cities",
-        icon: "🗺️"
-    },
-
-    countriesPage: {
-        id: "countriesPage",
-        to: "/countries",
-        text: "Countries",
-        icon: "🌎"
-    }
-};
-
-const pagesConfig: { [key: string]: IPages } = {
-    ...headerPages,
-    ...appPages
+const pagesConfig = {
+    ...headerPages
 };
 
 export default pagesConfig;

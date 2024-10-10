@@ -1,12 +1,17 @@
 import { RouteProps } from "react-router-dom";
-import { appPages } from "../config/pages.config";
 
 import NotFoundPage from "../pages/NotFound.page";
-import ProductPage from "../pages/product/Product.page";
+import pagesConfig from "../config/pages.config";
 
 const AppRoutes: RouteProps[] = [
-    { path: appPages.citiesPage.to, element: <ProductPage /> },
-    { path: appPages.countriesPage.to, element: <ProductPage /> },
+    {
+        path: pagesConfig.appPage.subPages.citiesPage.to,
+        element: <p>List of sdfsafasf</p>
+    },
+    {
+        path: pagesConfig.appPage.subPages.countriesPage.to,
+        element: <p>List of countries</p>
+    },
     { path: "*", element: <NotFoundPage /> }
 ];
 

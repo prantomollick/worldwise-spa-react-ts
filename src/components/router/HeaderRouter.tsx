@@ -1,22 +1,19 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import pagesConfig, { appPages } from "../../config/pages.config";
-import HeaderRoutes from "../../routes/HeaderRoutes";
+import pagesConfig from "../../config/pages.config";
 import AppRoutes from "../../routes/AppRoutes";
+import HeaderRoutes from "../../routes/HeaderRoutes";
 
 const HeaderRouter: React.FC = () => {
     return (
         <Routes>
             {HeaderRoutes.map((routeProps) => {
-                console.log(
-                    "RouteProps",
-                    routeProps,
-                    routeProps.path,
-                    appPages.appPage?.to
-                );
-
                 return routeProps.path === pagesConfig.appPage.to ? (
-                    <Route key={routeProps.path} element={routeProps.element}>
+                    <Route
+                        key={routeProps.path}
+                        path={routeProps.path}
+                        element={routeProps.element}
+                    >
                         {AppRoutes.map((routeProps) => (
                             <Route key={routeProps.path} {...routeProps} />
                         ))}

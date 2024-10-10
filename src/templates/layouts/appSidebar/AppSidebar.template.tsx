@@ -5,13 +5,14 @@ import LogoTemplate from "../logo/Logo.template";
 import AppNavTemplate from "../appNavigation/AppNav.template";
 
 import styles from "./AppSidebarTemplate.module.css";
+import { Outlet } from "react-router-dom";
 
 const AppSidebarTemplate: FC = () => {
     return (
         <div className={styles.sidebar}>
             <LogoTemplate />
             <AppNavTemplate />
-            <p>List of cities</p>
+            <Outlet />
             <AppFooter className={styles.footer}>
                 <p className={styles.copyright}>
                     &copy; Copyright {new Date().getFullYear()} by Worldwise
