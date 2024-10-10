@@ -1,11 +1,11 @@
 import { FC } from "react";
 
 import Nav, { NavItem } from "../../../components/layouts/navigation/Nav";
-import pagesConfig from "../../../config/pages.config";
+import { headerPages } from "../../../config/pages.config";
 
+import { NavLink } from "react-router-dom";
 import LogoTemplate from "../logo/Logo.template";
 import styles from "./HeaderTemplate.module.css";
-import { NavLink } from "react-router-dom";
 
 const HeaderTemplate: FC = () => {
     return (
@@ -14,22 +14,19 @@ const HeaderTemplate: FC = () => {
 
             <div className={styles.navWraper}>
                 <Nav>
-                    {Object.keys(pagesConfig)
+                    {Object.values(headerPages)
                         .slice(0, 3)
                         .map((page) => (
-                            <NavItem
-                                to={pagesConfig[page].to}
-                                key={pagesConfig[page].id}
-                            >
-                                {pagesConfig[page].text}
+                            <NavItem to={page.to} key={page.id}>
+                                {page.text}
                             </NavItem>
                         ))}
                 </Nav>
                 <NavLink
-                    to={pagesConfig["loginPage"].to}
+                    to={headerPages.loginPage.to}
                     className={styles.ctaLink}
                 >
-                    {pagesConfig["loginPage"].text}
+                    {headerPages.loginPage.text}
                 </NavLink>
             </div>
         </header>

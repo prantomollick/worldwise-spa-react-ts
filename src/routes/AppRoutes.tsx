@@ -5,6 +5,11 @@ import pagesConfig from "../config/pages.config";
 
 const AppRoutes: RouteProps[] = [
     {
+        index: true,
+        path: pagesConfig.appPage.to,
+        element: <p>LIST</p>
+    },
+    {
         path: pagesConfig.appPage.subPages.citiesPage.to,
         element: <p>List of sdfsafasf</p>
     },
