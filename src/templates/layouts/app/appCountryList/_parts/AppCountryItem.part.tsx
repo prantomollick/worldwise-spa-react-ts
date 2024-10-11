@@ -8,10 +8,12 @@ interface ICountryItemProps {
 }
 
 const AppCountryItemPart: FC<ICountryItemProps> = ({ country }) => {
+    const { emoji, country: countryName } = country;
+
     return (
         <li className={styles.countryItem}>
-            <span>{country.emoji}</span>
-            <span>{country.country}</span>
+            <span>{emoji}</span>
+            <span>{countryName}</span>
         </li>
     );
 };
