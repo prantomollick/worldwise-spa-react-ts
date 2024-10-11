@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
+import AppMapTemplate from "../../templates/layouts/app/appMap/AppMap.template";
+import AppSidebarTemplate from "../../templates/layouts/app/appSidebar/AppSidebar.template";
 import styles from "./AppPage.module.css";
-import AppSidebarTemplate from "../../templates/layouts/appSidebar/AppSidebar.template";
-import AppMapTemplate from "../../templates/layouts/appMap/AppMap.template";
 
 const AppPage: FC = () => {
     return (

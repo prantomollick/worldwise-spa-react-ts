@@ -1,7 +1,7 @@
 import { FC } from "react";
 
-import AppFooter from "../../../components/layouts/appFooter/AppFooter";
-import LogoTemplate from "../logo/Logo.template";
+import AppFooter from "../../../../components/layouts/appFooter/AppFooter";
+import LogoTemplate from "../../logo/Logo.template";
 import AppNavTemplate from "../appNavigation/AppNav.template";
 
 import styles from "./AppSidebarTemplate.module.css";

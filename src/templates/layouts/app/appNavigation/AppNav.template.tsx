@@ -1,6 +1,5 @@
-import Nav, { NavItem } from "../../../components/layouts/navigation/Nav";
-import pagesConfig from "../../../config/pages.config";
-
+import Nav, { NavItem } from "../../../../components/layouts/navigation/Nav";
+import pagesConfig from "../../../../config/pages.config";
 import styles from "./AppNavTemplate.module.css";
 
 function AppNavTemplate() {
