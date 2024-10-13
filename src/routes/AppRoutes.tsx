@@ -1,4 +1,4 @@
-import { RouteProps } from "react-router-dom";
+import { Navigate, RouteProps } from "react-router-dom";
 
 import NotFoundPage from "../pages/NotFound.page";
 import pagesConfig from "../config/pages.config";
@@ -11,7 +11,7 @@ const AppRoutes: RouteProps[] = [
     {
         index: true,
         path: pagesConfig.appPage.to,
-        element: <AppCityListTemplate />
+        element: <Navigate to={pagesConfig.appPage.subPages.citiesPage.to} />
     },
     {
         path: pagesConfig.appPage.subPages.citiesPage.to,
