@@ -1,9 +1,9 @@
 import { FC } from "react";
 
-import styles from "./HomePage.module.css";
 import { Link } from "react-router-dom";
 import pagesConfig from "../../config/pages.config";
 import HeaderTemplate from "../../templates/layouts/headers/Header.template";
+import styles from "./HomePage.module.css";
 
 const HomePage: FC = () => {
     return (

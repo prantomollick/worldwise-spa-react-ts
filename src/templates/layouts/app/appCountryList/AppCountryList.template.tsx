@@ -3,10 +3,10 @@ import Message from "../../../../components/message/Message";
 import Spinner from "../../../../components/spinner/Spinner";
 import { useCities } from "../../../../hooks/useCities";
 
-import type { countries } from "../../../../components/types/countries.type";
+import type { countries } from "../../../../types/countries.type";
 import styles from "./AppCountryListTemplate.module.css";
 import AppCountryItemPart from "./_parts/AppCountryItem.part";
-import type { city } from "../../../../components/types/cities.type";
+import type { city } from "../../../../types/cities.type";
 
 const AppCountryListTemplate: FC = () => {
     const { isLoading, cities } = useCities();

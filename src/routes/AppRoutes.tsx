@@ -10,8 +10,11 @@ import AppFormTemplate from "../templates/layouts/app/AppForm/AppForm.template";
 const AppRoutes: RouteProps[] = [
     {
         index: true,
+
         path: pagesConfig.appPage.to,
-        element: <Navigate to={pagesConfig.appPage.subPages.citiesPage.to} />
+        element: (
+            <Navigate to={pagesConfig.appPage.subPages.citiesPage.to} replace />
+        )
     },
     {
         path: pagesConfig.appPage.subPages.citiesPage.to,

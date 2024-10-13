@@ -1,34 +1,12 @@
-import { useEffect, useState } from "react";
-import { cities } from "../components/types/cities.type";
-
+import { useContext } from "react";
+import { CitiesContext } from "../contexts/citiesContext";
 export const useCities = () => {
-    const [cities, setCities] = useState<cities>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const context = useContext(CitiesContext);
 
-    useEffect(() => {
-        async function fetchCities() {
-            try {
-                setIsLoading(true);
-                const apiURL = import.meta.env.VITE_API_SERVER_URL + "/cities";
-                const res = await fetch(apiURL);
-                if (!res.ok)
-                    throw new Error("Something went wrong to fetching  cities");
-                const cities = await res.json();
-                setCities(cities);
-            } catch (error) {
-                if (error instanceof Error) {
-                    console.error(error.message);
-                }
-            } finally {
-                setIsLoading(false);
-            }
-        }
-        fetchCities();
-        return () => {};
-    }, []);
+    if (!context) {
+        throw new Error("useCities must be used within a CitiesProvider");
+    }
 
-    return {
-        cities,
-        isLoading
-    };
+    const { cities, isLoading, currentCity, getCity } = context;
+    return { cities, isLoading, currentCity, getCity };
 };

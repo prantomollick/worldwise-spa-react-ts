@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import styles from "./AppCountryItemPart.module.css";
-import type { country } from "../../../../../components/types/countries.type";
+import type { country } from "../../../../../types/countries.type";
 
 interface ICountryItemProps {
     country: country;
