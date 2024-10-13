@@ -1,9 +1,11 @@
-import React, { FC } from "react";
-import { useCities } from "../../../../hooks/useCities";
+import { FC } from "react";
 import Spinner from "../../../../components/spinner/Spinner";
-import AppCityItemPart from "./_parts/AppCityItem.parts";
-import styles from "./AppCityListTemplate.module.css";
+import { useCities } from "../../../../hooks/useCities";
+
 import Message from "../../../../components/message/Message";
+import AppCityListPart from "./_parts/AppCityList.parts";
+import styles from "./AppCityListTemplate.module.css";
+import { useSearchParams } from "react-router-dom";
 
 const AppCityListTemplate: FC = () => {
     const { isLoading, cities } = useCities();
@@ -18,7 +20,7 @@ const AppCityListTemplate: FC = () => {
     return (
         <ul className={styles.cityList}>
             {cities.map((city) => (
-                <AppCityItemPart key={city.id} city={city} />
+                <AppCityListPart key={city.id} city={city} />
             ))}
         </ul>
     );

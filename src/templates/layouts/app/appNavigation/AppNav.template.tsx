@@ -5,11 +5,13 @@ import styles from "./AppNavTemplate.module.css";
 function AppNavTemplate() {
     return (
         <Nav className={styles.nav}>
-            {Object.values(pagesConfig.appPage.subPages).map((page) => (
-                <NavItem key={page.id} to={page.to}>
-                    {page.text}
-                </NavItem>
-            ))}
+            {Object.values(pagesConfig.appPage.subPages)
+                .slice(0, 2)
+                .map((page) => (
+                    <NavItem key={page.id} to={page.to}>
+                        {page.text}
+                    </NavItem>
+                ))}
         </Nav>
     );
 }

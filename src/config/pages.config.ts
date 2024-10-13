@@ -37,7 +37,15 @@ export const headerPages = {
                 id: "citiesPage",
                 to: "/app/cities",
                 text: "Cities",
-                icon: "🗺️"
+                icon: "🗺️",
+                subPages: {
+                    cityPage: {
+                        id: "cityPage",
+                        to: "/app/cities/:cityId",
+                        text: "City",
+                        icon: "🏙️"
+                    }
+                }
             },
 
             countriesPage: {
@@ -45,6 +53,13 @@ export const headerPages = {
                 to: "/app/countries",
                 text: "Countries",
                 icon: "🌎"
+            },
+
+            formPage: {
+                id: "formPage",
+                to: "/app/form",
+                text: "Form",
+                icon: "🙅"
             }
         }
     }
