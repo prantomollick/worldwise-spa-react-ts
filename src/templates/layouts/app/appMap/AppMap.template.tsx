@@ -1,6 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import styles from "./AppMapTemplate.module.css";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import {
     MapContainer,
     Marker,
@@ -9,15 +7,18 @@ import {
     useMap,
     useMapEvents,
 } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
+import Button from "../../../../components/ui/Button/Button";
 import { useCities } from "../../../../hooks/useCities";
 import { useGeolocation } from "../../../../hooks/useGeolocation";
-import Button from "../../../../components/ui/Button/Button";
+import { useUrlPosition } from "../../../../hooks/useUrlPosition";
+import styles from "./AppMapTemplate.module.css";
 
 const AppMapTemplate: FC = () => {
     const [mapPosition, setMapPosition] = useState<[number, number]>([
         51.505, -0.09,
     ]);
-    const [searchParams] = useSearchParams();
+    const { lat, lng } = useUrlPosition();
     const {
         isLoading: isLoadingPosition,
         position: geolocationPosition,
@@ -25,8 +26,6 @@ const AppMapTemplate: FC = () => {
     } = useGeolocation();
 
     const { cities } = useCities();
-    const lat: number = Number(searchParams.get("lat"));
-    const lng: number = Number(searchParams.get("lng"));
 
     useEffect(() => {
         if (lat && lng) {

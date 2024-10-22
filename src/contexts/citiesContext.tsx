@@ -5,7 +5,7 @@ import {
     useCallback,
     useEffect,
     useMemo,
-    useState
+    useState,
 } from "react";
 import { TCities, TCity } from "../types/cities.type";
 
@@ -14,12 +14,14 @@ interface ICitiesContextProps {
     isLoading: boolean;
     currentCity: TCity | null;
     getCity: (id: string) => Promise<void>;
+    createCity: (newCity: TCity) => Promise<void>;
 }
 export const CitiesContext = createContext<ICitiesContextProps>({
     cities: [],
     isLoading: false,
     currentCity: null,
-    getCity: () => Promise.resolve()
+    getCity: () => Promise.resolve(),
+    createCity: () => Promise.resolve(),
 } as ICitiesContextProps);
 
 interface ICitiesProvider {
@@ -72,14 +74,41 @@ export const CitiesProvider: FC<ICitiesProvider> = ({ children }) => {
         }
     }, []);
 
+    const createCity = useCallback(async (newCity: TCity) => {
+        try {
+            setIsLoading(true);
+            const apiURL = `${import.meta.env.VITE_API_SERVER_URL}/cities`;
+            const res = await fetch(apiURL, {
+                method: "POST",
+                body: JSON.stringify(newCity),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to create city!");
+            }
+
+            const cityData = await res.json();
+
+            setCities((cities) => [...cities, cityData]);
+        } catch (error) {
+            console.error("Error fetching city:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     const values: ICitiesContextProps = useMemo(
         () => ({
             cities,
             isLoading,
             currentCity,
-            getCity
+            getCity,
+            createCity,
         }),
-        [cities, isLoading, currentCity, getCity]
+        [cities, isLoading, currentCity, getCity, createCity]
     );
 
     return (

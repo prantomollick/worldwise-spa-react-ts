@@ -2,13 +2,13 @@ export type TCity = {
     cityName: string;
     country: string;
     emoji: string;
-    date: string;
+    date: Date | string | null;
     notes: string;
     position: {
         lat: number;
         lng: number;
     };
-    id: number;
+    id: number | string;
 };
 
 export type TCities = TCity[];
