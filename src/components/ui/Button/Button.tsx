@@ -7,7 +7,7 @@ interface IButtonProps extends HTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
     isDisable?: boolean;
     className?: string;
-    variant: "primary" | "back";
+    variant: "primary" | "back" | "position";
     type?: "button" | "submit" | "reset";
 
     // isActive?: boolean;
