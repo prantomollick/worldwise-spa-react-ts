@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 import type { TCity } from "../../../../../types/cities.type";
 
 import clsx from "clsx";
@@ -12,8 +12,13 @@ interface IAppCityItemPart {
 }
 
 const AppCityListPart: FC<IAppCityItemPart> = ({ city }) => {
-    const { currentCity } = useCities();
+    const { currentCity, deleteCity } = useCities();
     const { emoji, cityName, date, id, position } = city;
+
+    const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        deleteCity(id.toString());
+    };
 
     return (
         <li>
@@ -26,8 +31,12 @@ const AppCityListPart: FC<IAppCityItemPart> = ({ city }) => {
             >
                 <span className={styles.emoji}>{emoji}</span>
                 <h3 className={styles.name}>{cityName}</h3>
-                <time className={styles.date}>{formatDate(date)}</time>
-                <button className={styles.deleteBtn}>&times;</button>
+                <time className={styles.date}>
+                    {date ? formatDate(date) : ""}
+                </time>
+                <button className={styles.deleteBtn} onClick={handleClick}>
+                    &times;
+                </button>
             </Link>
         </li>
     );

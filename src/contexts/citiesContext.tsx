@@ -15,6 +15,7 @@ interface ICitiesContextProps {
     currentCity: TCity | null;
     getCity: (id: string) => Promise<void>;
     createCity: (newCity: TCity) => Promise<void>;
+    deleteCity: (id: string) => Promise<void>;
 }
 export const CitiesContext = createContext<ICitiesContextProps>({
     cities: [],
@@ -22,6 +23,7 @@ export const CitiesContext = createContext<ICitiesContextProps>({
     currentCity: null,
     getCity: () => Promise.resolve(),
     createCity: () => Promise.resolve(),
+    deleteCity: () => Promise.resolve(),
 } as ICitiesContextProps);
 
 interface ICitiesProvider {
@@ -100,6 +102,28 @@ export const CitiesProvider: FC<ICitiesProvider> = ({ children }) => {
         }
     }, []);
 
+    const deleteCity = useCallback(async (id: string) => {
+        try {
+            setIsLoading(true);
+            const apiURL = `${
+                import.meta.env.VITE_API_SERVER_URL
+            }/cities/${id}`;
+            const res = await fetch(apiURL, {
+                method: "DELETE",
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to delete city!");
+            }
+
+            setCities((cities) => cities.filter((city) => city.id !== id));
+        } catch (error) {
+            console.error("Error fetching city:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     const values: ICitiesContextProps = useMemo(
         () => ({
             cities,
@@ -107,8 +131,9 @@ export const CitiesProvider: FC<ICitiesProvider> = ({ children }) => {
             currentCity,
             getCity,
             createCity,
+            deleteCity,
         }),
-        [cities, isLoading, currentCity, getCity, createCity]
+        [cities, isLoading, currentCity, getCity, createCity, deleteCity]
     );
 
     return (
