@@ -5,9 +5,19 @@ import {
     useCallback,
     useEffect,
     useMemo,
-    useState,
+    useReducer,
 } from "react";
 import { TCities, TCity } from "../types/cities.type";
+import { throwFetchResError } from "../utils/utils";
+
+enum ENActionTypes {
+    LOADING = "loading",
+    CITIES_LOADED = "cities/loaded",
+    CITY_LOADED = "city/loaded",
+    CITY_CREATED = "city/created",
+    CITY_DELETED = "city/deleted",
+    REJECTED = "rejected",
+}
 
 interface ICitiesContextProps {
     cities: TCities;
@@ -26,59 +36,141 @@ export const CitiesContext = createContext<ICitiesContextProps>({
     deleteCity: () => Promise.resolve(),
 } as ICitiesContextProps);
 
-interface ICitiesProvider {
-    children: ReactNode;
+interface IInitialState {
+    cities: TCity[];
+    isLoading: boolean;
+    currentCity: TCity | null;
+    error: string;
 }
-export const CitiesProvider: FC<ICitiesProvider> = ({ children }) => {
-    const [cities, setCities] = useState<TCities>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [currentCity, setCurrentCity] = useState<TCity | null>(null);
+
+type TActions =
+    | { type: ENActionTypes.LOADING }
+    | { type: ENActionTypes.CITIES_LOADED; payload: TCity[] }
+    | { type: ENActionTypes.CITY_LOADED; payload: TCity }
+    | { type: ENActionTypes.CITY_CREATED; payload: TCity }
+    | { type: ENActionTypes.CITY_DELETED; payload: string }
+    | { type: ENActionTypes.REJECTED; payload: string };
+
+const initialState: IInitialState = {
+    cities: [],
+    isLoading: false,
+    currentCity: null,
+    error: "",
+};
+
+const reducer = (state: IInitialState, action: TActions): IInitialState => {
+    switch (action.type) {
+        case ENActionTypes.LOADING:
+            return { ...state, isLoading: true };
+
+        case ENActionTypes.CITIES_LOADED:
+            return {
+                ...state,
+                isLoading: false,
+                cities: action.payload,
+            };
+
+        case ENActionTypes.CITY_LOADED:
+            return {
+                ...state,
+                isLoading: false,
+                currentCity: action.payload,
+            };
+
+        case ENActionTypes.CITY_CREATED:
+            return {
+                ...state,
+                isLoading: false,
+                cities: [...state.cities, action.payload],
+                currentCity: action.payload,
+            };
+
+        case ENActionTypes.CITY_DELETED:
+            return {
+                ...state,
+                isLoading: false,
+                cities: state.cities.filter(
+                    (city) => city.id !== action.payload
+                ),
+                currentCity: null,
+            };
+
+        case ENActionTypes.REJECTED:
+            return {
+                ...state,
+                error: action.payload,
+            };
+
+        default:
+            throw new Error("Unknown action type");
+    }
+};
+
+export const CitiesProvider: FC<{ children: ReactNode }> = ({ children }) => {
+    const [{ cities, isLoading, currentCity }, dispatch] = useReducer(
+        reducer,
+        initialState
+    );
 
     useEffect(() => {
         async function fetchCities() {
             try {
-                setIsLoading(true);
+                dispatch({ type: ENActionTypes.LOADING });
+
                 const apiURL = import.meta.env.VITE_API_SERVER_URL + "/cities";
                 const res = await fetch(apiURL);
 
                 if (!res.ok) {
-                    throw new Error("Failed to fetch cities");
+                    throwFetchResError("Failed to fetch cities", res);
                 }
 
                 const citiesData = await res.json();
-                setCities(citiesData);
+                dispatch({
+                    type: ENActionTypes.CITIES_LOADED,
+                    payload: citiesData,
+                });
             } catch (error) {
-                console.error("Error fetching cities:", error);
-            } finally {
-                setIsLoading(false);
+                if (error instanceof Error) {
+                    dispatch({
+                        type: ENActionTypes.REJECTED,
+                        payload:
+                            error.message ||
+                            "There was an error loading data...",
+                    });
+                }
             }
         }
         fetchCities();
     }, []);
 
     const getCity = useCallback(async (id: string) => {
+        dispatch({ type: ENActionTypes.LOADING });
+
         try {
-            setIsLoading(true);
             const apiURL =
                 import.meta.env.VITE_API_SERVER_URL + `/cities/${id}`;
             const res = await fetch(apiURL);
 
             if (!res.ok) {
-                throw new Error("Failed to fetch city");
+                throwFetchResError("Failed to fetch city", res);
             }
 
             const cityData = await res.json();
-            setCurrentCity(cityData);
+            dispatch({ type: ENActionTypes.CITY_LOADED, payload: cityData });
         } catch (error) {
-            console.error("Error fetching city:", error);
-        } finally {
-            setIsLoading(false);
+            if (error instanceof Error) {
+                dispatch({
+                    type: ENActionTypes.REJECTED,
+                    payload: error.message || "Error fetching city",
+                });
+            }
         }
     }, []);
 
     const createCity = useCallback(async (newCity: TCity) => {
+        dispatch({ type: ENActionTypes.LOADING });
+
         try {
-            setIsLoading(true);
             const apiURL = `${import.meta.env.VITE_API_SERVER_URL}/cities`;
             const res = await fetch(apiURL, {
                 method: "POST",
@@ -89,22 +181,25 @@ export const CitiesProvider: FC<ICitiesProvider> = ({ children }) => {
             });
 
             if (!res.ok) {
-                throw new Error("Failed to create city!");
+                throwFetchResError("Failed to create city!", res);
             }
 
             const cityData = await res.json();
 
-            setCities((cities) => [...cities, cityData]);
+            dispatch({ type: ENActionTypes.CITY_CREATED, payload: cityData });
         } catch (error) {
-            console.error("Error fetching city:", error);
-        } finally {
-            setIsLoading(false);
+            if (error instanceof Error) {
+                dispatch({
+                    type: ENActionTypes.REJECTED,
+                    payload: error.message || "Error fetching city",
+                });
+            }
         }
     }, []);
 
     const deleteCity = useCallback(async (id: string) => {
+        dispatch({ type: ENActionTypes.LOADING });
         try {
-            setIsLoading(true);
             const apiURL = `${
                 import.meta.env.VITE_API_SERVER_URL
             }/cities/${id}`;
@@ -113,14 +208,17 @@ export const CitiesProvider: FC<ICitiesProvider> = ({ children }) => {
             });
 
             if (!res.ok) {
-                throw new Error("Failed to delete city!");
+                throwFetchResError("Failed to delete city!", res);
             }
 
-            setCities((cities) => cities.filter((city) => city.id !== id));
+            dispatch({ type: ENActionTypes.CITY_DELETED, payload: id });
         } catch (error) {
-            console.error("Error fetching city:", error);
-        } finally {
-            setIsLoading(false);
+            if (error instanceof Error) {
+                dispatch({
+                    type: ENActionTypes.REJECTED,
+                    payload: error.message || "Error deleting city:",
+                });
+            }
         }
     }, []);
 

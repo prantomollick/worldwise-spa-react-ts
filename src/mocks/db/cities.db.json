@@ -25,16 +25,40 @@
       "id": "17806751"
     },
     {
-      "cityName": "Berlin",
-      "country": "Germany",
-      "emoji": "🇩🇪",
-      "date": "2027-02-12T09:24:11.863Z",
-      "notes": "Amazing 😃",
+      "id": "ae8a1a73-cae1-4581-81a2-a34dfdc6515f",
+      "cityName": "London",
+      "country": "United Kingdom of Great Britain and Northern Ireland (the)",
+      "date": "2024-10-25T20:05:33.791Z",
+      "notes": "",
+      "emoji": "🇬🇧",
       "position": {
-        "lat": 52.53586782505711,
-        "lng": 13.376933665713324
-      },
-      "id": "98443197"
+        "lat": 51.51194758264939,
+        "lng": -0.07501602172851564
+      }
+    },
+    {
+      "id": "314e68e5-412c-4985-ac84-7fb07ce5b2ce",
+      "cityName": "Letchworth Garden City",
+      "country": "United Kingdom of Great Britain and Northern Ireland (the)",
+      "date": "2024-10-25T20:33:09.657Z",
+      "notes": "",
+      "emoji": "🇬🇧",
+      "position": {
+        "lat": 51.89513899196507,
+        "lng": -0.361175537109375
+      }
+    },
+    {
+      "id": "7d7bbd7a-8b45-44f1-b46c-4f16d448f6d2",
+      "cityName": "Shillington",
+      "country": "United Kingdom of Great Britain and Northern Ireland (the)",
+      "date": "2024-10-25T20:33:26.859Z",
+      "notes": "",
+      "emoji": "🇬🇧",
+      "position": {
+        "lat": 51.964154032322156,
+        "lng": -0.37010192871093756
+      }
     }
   ]
 }
