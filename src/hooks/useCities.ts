@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CitiesContext } from "../contexts/citiesContext";
+
 export const useCities = () => {
     const context = useContext(CitiesContext);
 
@@ -7,8 +8,23 @@ export const useCities = () => {
         throw new Error("useCities must be used within a CitiesProvider");
     }
 
-    const { cities, isLoading, currentCity, getCity, createCity, deleteCity } =
-        context;
+    const {
+        cities,
+        isLoading,
+        currentCity,
+        error,
+        getCity,
+        createCity,
+        deleteCity,
+    } = context;
 
-    return { cities, isLoading, currentCity, getCity, createCity, deleteCity };
+    return {
+        cities,
+        isLoading,
+        currentCity,
+        error,
+        getCity,
+        createCity,
+        deleteCity,
+    };
 };

@@ -23,6 +23,7 @@ interface ICitiesContextProps {
     cities: TCities;
     isLoading: boolean;
     currentCity: TCity | null;
+    error: string;
     getCity: (id: string) => Promise<void>;
     createCity: (newCity: TCity) => Promise<void>;
     deleteCity: (id: string) => Promise<void>;
@@ -31,6 +32,7 @@ export const CitiesContext = createContext<ICitiesContextProps>({
     cities: [],
     isLoading: false,
     currentCity: null,
+    error: "",
     getCity: () => Promise.resolve(),
     createCity: () => Promise.resolve(),
     deleteCity: () => Promise.resolve(),
@@ -107,7 +109,7 @@ const reducer = (state: IInitialState, action: TActions): IInitialState => {
 };
 
 export const CitiesProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [{ cities, isLoading, currentCity }, dispatch] = useReducer(
+    const [{ cities, isLoading, currentCity, error }, dispatch] = useReducer(
         reducer,
         initialState
     );
@@ -143,29 +145,39 @@ export const CitiesProvider: FC<{ children: ReactNode }> = ({ children }) => {
         fetchCities();
     }, []);
 
-    const getCity = useCallback(async (id: string) => {
-        dispatch({ type: ENActionTypes.LOADING });
+    const getCity = useCallback(
+        async (id: string) => {
+            console.log(id, currentCity?.id);
 
-        try {
-            const apiURL =
-                import.meta.env.VITE_API_SERVER_URL + `/cities/${id}`;
-            const res = await fetch(apiURL);
+            if (id === currentCity?.id) return; // If the city is already loaded, return immediately
 
-            if (!res.ok) {
-                throwFetchResError("Failed to fetch city", res);
-            }
+            dispatch({ type: ENActionTypes.LOADING });
 
-            const cityData = await res.json();
-            dispatch({ type: ENActionTypes.CITY_LOADED, payload: cityData });
-        } catch (error) {
-            if (error instanceof Error) {
+            try {
+                const apiURL =
+                    import.meta.env.VITE_API_SERVER_URL + `/cities/${id}`;
+                const res = await fetch(apiURL);
+
+                if (!res.ok) {
+                    throwFetchResError("Failed to fetch city", res);
+                }
+
+                const cityData = await res.json();
                 dispatch({
-                    type: ENActionTypes.REJECTED,
-                    payload: error.message || "Error fetching city",
+                    type: ENActionTypes.CITY_LOADED,
+                    payload: cityData,
                 });
+            } catch (error) {
+                if (error instanceof Error) {
+                    dispatch({
+                        type: ENActionTypes.REJECTED,
+                        payload: error.message || "Error fetching city",
+                    });
+                }
             }
-        }
-    }, []);
+        },
+        [currentCity]
+    );
 
     const createCity = useCallback(async (newCity: TCity) => {
         dispatch({ type: ENActionTypes.LOADING });
@@ -227,11 +239,12 @@ export const CitiesProvider: FC<{ children: ReactNode }> = ({ children }) => {
             cities,
             isLoading,
             currentCity,
+            error,
             getCity,
             createCity,
             deleteCity,
         }),
-        [cities, isLoading, currentCity, getCity, createCity, deleteCity]
+        [cities, isLoading, currentCity, error, getCity, createCity, deleteCity]
     );
 
     return (
