@@ -6,6 +6,7 @@ import AppCityListTemplate from "../templates/layouts/app/appCityList/AppCityLis
 import AppCountryListTemplate from "../templates/layouts/app/appCountryList/AppCountryList.template";
 import AppCityItemTemplate from "../templates/layouts/app/AppCityItem/AppCityItem.template";
 import AppFormTemplate from "../templates/layouts/app/AppForm/AppForm.template";
+import { ProtectedRoute } from "../pages/ProtectedRoute";
 
 const AppRoutes: RouteProps[] = [
     {
@@ -13,26 +14,47 @@ const AppRoutes: RouteProps[] = [
 
         path: pagesConfig.appPage.to,
         element: (
-            <Navigate to={pagesConfig.appPage.subPages.citiesPage.to} replace />
-        )
+            <ProtectedRoute>
+                <Navigate
+                    to={pagesConfig.appPage.subPages.citiesPage.to}
+                    replace
+                />
+            </ProtectedRoute>
+        ),
     },
     {
         path: pagesConfig.appPage.subPages.citiesPage.to,
-        element: <AppCityListTemplate />
+        element: (
+            <ProtectedRoute>
+                <AppCityListTemplate />,
+            </ProtectedRoute>
+        ),
     },
     {
         path: pagesConfig.appPage.subPages.citiesPage.subPages.cityPage.to,
-        element: <AppCityItemTemplate />
+        element: (
+            <ProtectedRoute>
+                <AppCityItemTemplate />
+            </ProtectedRoute>
+        ),
     },
     {
         path: pagesConfig.appPage.subPages.countriesPage.to,
-        element: <AppCountryListTemplate />
+        element: (
+            <ProtectedRoute>
+                <AppCountryListTemplate />
+            </ProtectedRoute>
+        ),
     },
     {
         path: pagesConfig.appPage.subPages.formPage.to,
-        element: <AppFormTemplate />
+        element: (
+            <ProtectedRoute>
+                <AppFormTemplate />
+            </ProtectedRoute>
+        ),
     },
-    { path: "*", element: <NotFoundPage /> }
+    { path: "*", element: <NotFoundPage /> },
 ];
 
 export default AppRoutes;
