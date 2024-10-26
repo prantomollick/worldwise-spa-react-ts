@@ -20,7 +20,7 @@ const HomePage: FC = () => {
                     can think of. Never forget your wonderful experiences, and
                     show your friends how you have wandered the world.
                 </h2>
-                <Link to={pagesConfig.appPage.to} className="cta">
+                <Link to={pagesConfig.loginPage.to} className="cta">
                     Start tracking now
                 </Link>
             </section>

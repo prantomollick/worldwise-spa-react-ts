@@ -8,23 +8,5 @@ export const useCities = () => {
         throw new Error("useCities must be used within a CitiesProvider");
     }
 
-    const {
-        cities,
-        isLoading,
-        currentCity,
-        error,
-        getCity,
-        createCity,
-        deleteCity,
-    } = context;
-
-    return {
-        cities,
-        isLoading,
-        currentCity,
-        error,
-        getCity,
-        createCity,
-        deleteCity,
-    };
+    return context;
 };
